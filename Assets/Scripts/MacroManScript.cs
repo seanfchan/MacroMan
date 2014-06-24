@@ -12,11 +12,24 @@ public class MacroManScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.W)) {
-			animator.SetTrigger("StartRunning");
+		float horizontalAxis = Input.GetAxis ("Horizontal");
+		if (horizontalAxis > 0.0f) {
+			animator.SetTrigger ("StartRunning");
+		} else if (horizontalAxis < 0.0f) {
+			// move left
+		} else {
+			animator.SetTrigger("StopRunning");
 		}
-		if (Input.GetKeyUp (KeyCode.W)) {
-			animator.SetTrigger ("StopRunning");
+		if (Input.GetAxis ("Vertical") > 0.0f) {
+			// nothing?
+		} else if (Input.GetAxis ("Vertical") < 0.0f) {
+			// nothing?
 		}
+//		if (Input.GetKeyDown (KeyCode.W)) {
+//			animator.SetTrigger("StartRunning");
+//		}
+//		if (Input.GetKeyUp (KeyCode.W)) {
+//			animator.SetTrigger ("StopRunning");
+//		}
 	}
 }
