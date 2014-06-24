@@ -18,9 +18,10 @@ public class MacroManScript : MonoBehaviour {
 	void Update () {
 		float horizontalAxis = Input.GetAxis ("Horizontal");
 		if (horizontalAxis > 0.0f) {
-			animator.SetTrigger ("StartRunning");
+			animator.SetTrigger ("StartRunningRight");
 			velocity.x = speed;
 		} else if (horizontalAxis < 0.0f) {
+			animator.SetTrigger ("StartRunningLeft");
 			velocity.x = -speed;
 		} else {
 			animator.SetTrigger("StopRunning");
