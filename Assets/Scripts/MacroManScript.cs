@@ -2,15 +2,18 @@
 using System.Collections;
 
 public class MacroManScript : MonoBehaviour {
+	public Transform shotPrefab;
 	public float horizontalSpeed = 10.0f;
 	public float jumpSpeed = 10.0f;
+	public float shotRate = 0.25f;
 
 	private Vector2 velocity = new Vector2 (0.0f, 0.0f);
+	private float facingDirection = 1.0f;
 	private Animator animator;
+	private float shotCooldown = 0.0f;
 
 	private bool jump = false;
 	private bool jumpCancel = false;
-
 	private bool isSlideDashing = false;
 
 	void Start () {
@@ -25,10 +28,12 @@ public class MacroManScript : MonoBehaviour {
 			animator.SetTrigger ("StartRunningRight");
 			animator.SetBool ("IsRunning", true);
 			velocity.x = horizontalSpeed * slideDashFactor;
+			facingDirection = 1.0f;
 		} else if (horizontalAxis < 0.0f) {
 			animator.SetTrigger ("StartRunningLeft");
 			animator.SetBool ("IsRunning", true);
 			velocity.x = -horizontalSpeed * slideDashFactor;
+			facingDirection = -1.0f;
 		} else {
 			animator.SetTrigger("StopRunning");
 			animator.SetBool ("IsRunning", false);
@@ -43,8 +48,19 @@ public class MacroManScript : MonoBehaviour {
 		}
 
 		// shooting
-		if (Input.GetButtonDown("Shoot")) {
+		shotCooldown -= Time.deltaTime;
+		if (Input.GetButtonDown("Shoot") && shotCooldown <= 0.0f) {
+			shotCooldown = shotRate;
 			animator.SetTrigger ("Shoot");
+			var shot = Instantiate (shotPrefab) as Transform;
+			if (shot != null) {
+				shot.parent = gameObject.transform;
+				shot.localPosition = new Vector3 (facingDirection * shot.position.x, shot.position.y, shot.position.z);
+				MoveScript moveScript = shot.GetComponent<MoveScript> ();
+				if (moveScript != null) {
+					moveScript.direction = new Vector2 (facingDirection, 0.0f);
+				}
+			}
 		}
 
 		// jumping
