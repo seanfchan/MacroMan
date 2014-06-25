@@ -2,45 +2,57 @@
 using System.Collections;
 
 public class MacroManScript : MonoBehaviour {
-
-	private Animator animator;
-
-	public float speed = 10.0f;
+	public float horizontalSpeed = 10.0f;
+	public float jumpSpeed = 10.0f;
 
 	private Vector2 velocity = new Vector2 (0.0f, 0.0f);
+	private Animator animator;
 
-	// Use this for initialization
+	private bool jump = false;
+
 	void Start () {
 		animator = GetComponent<Animator> ();
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		float horizontalAxis = Input.GetAxis ("Horizontal");
 		if (horizontalAxis > 0.0f) {
 			animator.SetTrigger ("StartRunningRight");
-			velocity.x = speed;
+			velocity.x = horizontalSpeed;
 		} else if (horizontalAxis < 0.0f) {
 			animator.SetTrigger ("StartRunningLeft");
-			velocity.x = -speed;
+			velocity.x = -horizontalSpeed;
 		} else {
 			animator.SetTrigger("StopRunning");
 			velocity.x = 0.0f;
 		}
 
 		if (Input.GetAxis ("Vertical") > 0.0f) {
-			// nothing?
+			// climb up?
 		} else if (Input.GetAxis ("Vertical") < 0.0f) {
-			// nothing?
+			// climb down?
 		}
 
 		if (Input.GetButtonDown("Fire1")) {
-			Debug.Log ("Fire1");
 			animator.SetTrigger("Shoot");
+		}
+
+		if (Input.GetButtonDown ("Jump")) {
+			animator.SetTrigger("Jump");
+			jump = true;
+		}
+		if (Input.GetButtonUp ("Jump")) {
+			// todo: cancel the jump. megaman physics
 		}
 	}
 
 	void FixedUpdate () {
+		if (jump) {
+			jump = false;
+			velocity.y = jumpSpeed;
+		} else {
+			velocity.y = rigidbody2D.velocity.y;
+		}
 		rigidbody2D.velocity = velocity;
 	}
 }
