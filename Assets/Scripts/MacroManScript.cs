@@ -11,21 +11,24 @@ public class MacroManScript : MonoBehaviour {
 	private bool jump = false;
 	private bool jumpCancel = false;
 
+	private bool isSlideDashing = false;
+
 	void Start () {
 		animator = GetComponent<Animator> ();
 	}
 
 	void Update () {
 		// movement
+		float slideDashFactor = (isSlideDashing) ? 1.5f : 1.0f;
 		float horizontalAxis = Input.GetAxis ("Horizontal");
 		if (horizontalAxis > 0.0f) {
 			animator.SetTrigger ("StartRunningRight");
 			animator.SetBool ("IsRunning", true);
-			velocity.x = horizontalSpeed;
+			velocity.x = horizontalSpeed * slideDashFactor;
 		} else if (horizontalAxis < 0.0f) {
 			animator.SetTrigger ("StartRunningLeft");
 			animator.SetBool ("IsRunning", true);
-			velocity.x = -horizontalSpeed;
+			velocity.x = -horizontalSpeed * slideDashFactor;
 		} else {
 			animator.SetTrigger("StopRunning");
 			animator.SetBool ("IsRunning", false);
@@ -57,10 +60,16 @@ public class MacroManScript : MonoBehaviour {
 		}
 
 		// slide dashing
+		if (!animator.GetCurrentAnimatorStateInfo (0).IsName ("SlideDashRight")
+		    && !animator.GetCurrentAnimatorStateInfo (0).IsName ("SlideDashLeft")
+		    && animator.GetBool ("IsOnGround")) {
+			isSlideDashing = false;
+		}
 		if (Input.GetButtonDown ("SlideDash")
 		    && animator.GetBool ("IsRunning")
 		    && animator.GetBool ("IsOnGround")) {
 			animator.SetTrigger ("SlideDash");
+			isSlideDashing = true;
 			// todo: increase speed until dash is done/interrupted
 		}
 	}
