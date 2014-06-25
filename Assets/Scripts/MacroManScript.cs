@@ -63,7 +63,9 @@ public class MacroManScript : MonoBehaviour {
 			velocity.y = jumpSpeed;
 		} else if (jumpCancel) {
 			jumpCancel = false;
-			velocity.y = 0.0f;
+			if (rigidbody2D.velocity.y > 0.0f) {
+				velocity.y = 0.0f;
+			}
 		} else {
 			velocity.y = rigidbody2D.velocity.y;
 		}
