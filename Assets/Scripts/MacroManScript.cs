@@ -27,17 +27,17 @@ public class MacroManScript : MonoBehaviour {
 			animator.SetTrigger("StopRunning");
 			velocity.x = 0.0f;
 		}
+
 		if (Input.GetAxis ("Vertical") > 0.0f) {
 			// nothing?
 		} else if (Input.GetAxis ("Vertical") < 0.0f) {
 			// nothing?
 		}
-//		if (Input.GetKeyDown (KeyCode.W)) {
-//			animator.SetTrigger("StartRunning");
-//		}
-//		if (Input.GetKeyUp (KeyCode.W)) {
-//			animator.SetTrigger ("StopRunning");
-//		}
+
+		if (Input.GetButtonDown("Fire1")) {
+			Debug.Log ("Fire1");
+			animator.SetTrigger("Shoot");
+		}
 	}
 
 	void FixedUpdate () {
