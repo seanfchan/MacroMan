@@ -9,6 +9,7 @@ public class MacroManScript : MonoBehaviour {
 	private Animator animator;
 
 	private bool jump = false;
+	private bool jumpCancel = false;
 
 	void Start () {
 		animator = GetComponent<Animator> ();
@@ -40,18 +41,18 @@ public class MacroManScript : MonoBehaviour {
 
 		// shooting
 		if (Input.GetButtonDown("Fire1")) {
-			animator.SetTrigger("Shoot");
+			animator.SetTrigger ("Shoot");
 		}
 
 		// jumping
 		if (Input.GetButtonDown ("Jump")) {
-			animator.SetTrigger("Jump");
-			animator.SetBool("IsOnGround", false);
+			animator.SetTrigger ("Jump");
+			animator.SetBool ("IsOnGround", false);
 			jump = true;
 		}
 		if (Input.GetButtonUp ("Jump")) {
-			// todo: cancel the jump. megaman physics
 			// todo: separate jump up/down animations? trigger each separately?
+			jumpCancel = true;
 		}
 	}
 
@@ -60,6 +61,9 @@ public class MacroManScript : MonoBehaviour {
 		if (jump) {
 			jump = false;
 			velocity.y = jumpSpeed;
+		} else if (jumpCancel) {
+			jumpCancel = false;
+			velocity.y = 0.0f;
 		} else {
 			velocity.y = rigidbody2D.velocity.y;
 		}
@@ -67,9 +71,8 @@ public class MacroManScript : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D (Collision2D collision) {
-		Debug.Log (collision.gameObject.name);
 		if (collision.gameObject.name.Equals ("Ground")) {
-			animator.SetBool("IsOnGround", true);
+			animator.SetBool ("IsOnGround", true);
 		}
 	}
 }
