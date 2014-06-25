@@ -69,6 +69,10 @@ public class MacroManScript : MonoBehaviour {
 			animator.SetTrigger ("Jump");
 			animator.SetBool ("IsOnGround", false);
 			jump = true;
+			AudioSource audioSource = transform.GetComponent<AudioSource> ();
+			if (audioSource != null) {
+				audioSource.Play ();
+			}
 		}
 		if (Input.GetButtonUp ("Jump")) {
 			// todo: separate jump up/down animations? trigger each separately?
