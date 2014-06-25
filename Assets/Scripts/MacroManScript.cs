@@ -40,12 +40,13 @@ public class MacroManScript : MonoBehaviour {
 		}
 
 		// shooting
-		if (Input.GetButtonDown("Fire1")) {
+		if (Input.GetButtonDown("Shoot")) {
 			animator.SetTrigger ("Shoot");
 		}
 
 		// jumping
-		if (Input.GetButtonDown ("Jump")) {
+		if (Input.GetButtonDown ("Jump")
+		    && animator.GetBool ("IsOnGround")) {
 			animator.SetTrigger ("Jump");
 			animator.SetBool ("IsOnGround", false);
 			jump = true;
@@ -53,6 +54,14 @@ public class MacroManScript : MonoBehaviour {
 		if (Input.GetButtonUp ("Jump")) {
 			// todo: separate jump up/down animations? trigger each separately?
 			jumpCancel = true;
+		}
+
+		// slide dashing
+		if (Input.GetButtonDown ("SlideDash")
+		    && animator.GetBool ("IsRunning")
+		    && animator.GetBool ("IsOnGround")) {
+			animator.SetTrigger ("SlideDash");
+			// todo: increase speed until dash is done/interrupted
 		}
 	}
 
