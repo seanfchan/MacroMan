@@ -108,6 +108,7 @@ public class MacroManScript : MonoBehaviour {
 			velocity.y = rigidbody2D.velocity.y;
 		}
 		rigidbody2D.velocity = velocity;
+		Camera.main.transform.position = new Vector3 (transform.position.x + 3.0f, Camera.main.transform.position.y, Camera.main.transform.position.z);
 	}
 
 	void OnCollisionEnter2D (Collision2D collision) {
