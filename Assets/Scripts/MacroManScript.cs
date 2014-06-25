@@ -109,6 +109,8 @@ public class MacroManScript : MonoBehaviour {
 		}
 		rigidbody2D.velocity = velocity;
 		Camera.main.transform.position = new Vector3 (transform.position.x + 3.0f, Camera.main.transform.position.y, Camera.main.transform.position.z);
+		GameObject scenery = GameObject.Find ("Scenery");
+		scenery.rigidbody2D.velocity = new Vector2 (-velocity.x / 10.0f, 0.0f);
 	}
 
 	void OnCollisionEnter2D (Collision2D collision) {
